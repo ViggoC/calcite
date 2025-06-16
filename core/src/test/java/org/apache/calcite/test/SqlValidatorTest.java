@@ -5412,6 +5412,15 @@ public class SqlValidatorTest extends SqlValidatorTestCase {
     sql("select * from emp join dept using (deptno)").ok()
         .type(empDeptType);
 
+    sql("select deptno from emp join dept using (deptno)")
+        .withValidatorIdentifierExpansion(true)
+        .ok();
+
+    // TODO: fix it
+    sql("select ^deptno^ from emp join dept using (deptno)")
+        .withValidatorIdentifierExpansion(false)
+        .fails("Column 'DEPTNO' is ambiguous");
+
     // NATURAL has same effect as USING
     sql("select * from emp natural join dept").ok()
         .type(empDeptType);
