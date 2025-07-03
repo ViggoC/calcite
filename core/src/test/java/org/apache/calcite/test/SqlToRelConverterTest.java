@@ -446,6 +446,13 @@ class SqlToRelConverterTest extends SqlToRelTestBase {
     sql(sql).ok();
   }
 
+  // FIXME: fails with "Cannot qualify common column 'EMP.DEPTNO'"
+  @Test void testJoinUsingWithUnqualifiedCommonColumnWhenDisallowsQualifyingCommonColumn() {
+    final String sql = "SELECT deptno, name\n"
+        + "FROM emp JOIN dept using (deptno)";
+    sql(sql).withConformance(SqlConformanceEnum.ORACLE_10).ok();
+  }
+
   /** Similar to {@link #testJoinUsingWithUnqualifiedCommonColumn()},
    * but with nested common column. */
   @Test void testJoinUsingWithUnqualifiedNestedCommonColumn() {
